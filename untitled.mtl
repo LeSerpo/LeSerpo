@@ -1,0 +1,13 @@
+# Blender MTL File: 'untitled'
+# Material Count: 1
+
+newmtl Material_25
+Ns 184.986982
+Ka 0.100000 0.100000 0.300000
+Kd 0.800000 0.800000 0.800000
+Ks 0.033333 0.033333 0.033333
+Ke 0.120000 0.100000 0.100000
+Ni 0.450000
+d 1.00000
+illum 2
+map_Kd Material_25_baseColor.png

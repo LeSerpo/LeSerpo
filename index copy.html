@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<title>
+    Dado
+</title>
+
+<head>
+    <link rel= "stylesheet" href="style.css"></link>
+</head>
+
+<body>
+    <script src="three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script src="MTLLoader.js"></script>
+    <script src="OBJLoader.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1,600)
+        camera.position.z = 3;
+
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setClearColor ("#FFFFFF")
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        document.body.appendChild (renderer.domElement);
+
+        window.addEventListener ('resize', () => {
+            renderer.setSize (window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+
+            camera.updateProjectionMatrix();
+        })
+
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+        var ourObj;
+
+        // Defining a variable for our two models
+        var ourObj;
+
+        // Create a material
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.load('untitled.mtl', function (materials) {
+
+            materials.preload();
+
+            // Load the object
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load('untitled.obj', function (object) {
+                scene.add(object);
+                ourObj = object;
+                object.position.z -= 370;
+                object.rotation.x = 250;
+
+            });
+        });
+
+//PRIMER BETA DEL DADO        
+        //var geometry = new THREE.IcosahedronBufferGeometry(1, 0);
+        //var material = new THREE.MeshLambertMaterial ({color: 0xFFCC00});
+        //var mesh = new THREE.Mesh(geometry, material)
+        //scene.add(mesh);     
+
+        
+
+
+
+        var light =new THREE.PointLight(0xFFFFFF, 1.1, 1000000)
+        light.position.set (100,100,100);
+        
+
+        scene.add(light);
+        
+
+        var render =function() {
+            requestAnimationFrame (render);
+            renderer.render (scene, camera);
+        }
+
+        function onMouseMove(event) {
+            event.preventDefault();
+
+            mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+            ;
+
+            raycaster.setFromCamera (mouse, camera);
+
+            var intersects = raycaster.intersectObjects(scene.children, true);
+            for (var i = 0; i < intersects.length; i++) {
+                this.tl = new TimelineMax().delay(.3);
+                this.tl.to(intersects[i].object.rotation, 2, 
+                {x: (Math.random () - 0.6) * 40, y: (Math.random () - 0.6) * 40,})
+
+            }
+
+        }
+
+        render ();
+
+        
+        
+        window.addEventListener('click', onMouseMove);
+    </script>
+
+</body>
+
+</html>
